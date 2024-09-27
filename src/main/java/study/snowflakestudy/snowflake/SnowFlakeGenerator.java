@@ -16,6 +16,7 @@ public class SnowFlakeGenerator implements IdentifierGenerator {
 
     // 각각 4비트, 9비트, 10비트로 구성됨  =  23비트
     // 여기 CASE_ONE 이나 CASE_TWO를 내가 원하는 무언가로 바꾸면 될듯!?
+    // 찾아보니 case_one이나 case_two에 머신ID나 근로자ID같은걸 넣어주고 거기의 ID규칙에 맞게 비트를 조정함.
     private static final int CASE_ONE_BITS = 4;
     private static final int CASE_TWO_BITS = 9;
     private static final int SEQUENCE_BITS = 10;
@@ -29,7 +30,7 @@ public class SnowFlakeGenerator implements IdentifierGenerator {
 
     // volatile로 선언하여 멀티 쓰레드에서 가시성 보장. 이러면 메인메모리에 올라가니까!
     private volatile long sequence = 0L;
-    // ID 생성에 사용되는 고유값
+    // ID 생성에 사용되는 고유값 <- 적당한 값으로 넣어주면 됨.
     private int case_one = 10;
     private int case_two = 0;
     // 마지막에 ID를 생성한 시간
