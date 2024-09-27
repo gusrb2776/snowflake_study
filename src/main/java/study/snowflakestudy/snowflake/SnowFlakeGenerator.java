@@ -23,7 +23,7 @@ public class SnowFlakeGenerator implements IdentifierGenerator {
 
     // 시퀸스는 중복방지로 같은 시간에 들어올경우 구분해주기 위해서 있는거임.
     // 시퀸스의 최댓값을 미리 지정해놓음. 2^10 = 1024 - 1 = 1023.
-    private static final int maxSequence = (int) (Math.pow(2, CASE_ONE_BITS) - 1);
+    private static final int maxSequence = (int) (Math.pow(2, SEQUENCE_BITS) - 1);
 
     // 원래 1970년부터 시간이 시작되는데 2015년 1월1일을 기준으로 에포크를 새로 지정
     private static final long CUSTOM_EPOCH = 1420070400000L;
