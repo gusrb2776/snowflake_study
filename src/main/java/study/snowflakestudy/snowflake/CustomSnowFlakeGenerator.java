@@ -1,6 +1,7 @@
 package study.snowflakestudy.snowflake;
 
-import lombok.NoArgsConstructor;
+
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
@@ -10,15 +11,15 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @Component
-@NoArgsConstructor
-// hibernate의 IdentifierGenerator를 구현해서 @GeneratedValue에 들어갈 녀석을 정의할 수 있음
-public class SnowFlakeGenerator implements IdentifierGenerator {
+@RequiredArgsConstructor
+public class CustomSnowFlakeGenerator implements IdentifierGenerator {
 
     // 각각 4비트, 9비트, 10비트로 구성됨  =  23비트
     // 여기 CASE_ONE 이나 CASE_TWO를 내가 원하는 무언가로 바꾸면 될듯!?
     // 찾아보니 case_one이나 case_two에 머신ID나 근로자ID같은걸 넣어주고 거기의 ID규칙에 맞게 비트를 조정함.
-    private static final int CASE_ONE_BITS = 4;
-    private static final int CASE_TWO_BITS = 9;
+    // 우린 딱히 없으니 걍 지움
+//    private static final int CASE_ONE_BITS = 4;
+//    private static final int CASE_TWO_BITS = 9;
     private static final int SEQUENCE_BITS = 10;
 
     // 시퀸스는 중복방지로 같은 시간에 들어올경우 구분해주기 위해서 있는거임.
@@ -72,10 +73,12 @@ public class SnowFlakeGenerator implements IdentifierGenerator {
         long id = 0;
 
         // 41비트짜리 timeStamp를 23비트 옆으로 이동해서 64비트로 맞춤.  110...1 + 23비트 (xxx)..
-        id |= (currentTimestamp << CASE_ONE_BITS + CASE_TWO_BITS + SEQUENCE_BITS);
+        // 우리는 timestamp랑 sequence만 있으면 될거같아서 다 지움
+//        id |= (currentTimestamp << CASE_ONE_BITS + CASE_TWO_BITS + SEQUENCE_BITS);
+        id |= (currentTimestamp << SEQUENCE_BITS);
         // 자릿수 맞춰서 넣어주기 위해서.. 뒤에 애들 비트수만큼 옆으로 떙기는거.
-        id |= (case_one << CASE_TWO_BITS + SEQUENCE_BITS);
-        id |= (case_two << SEQUENCE_BITS);
+//        id |= (case_one << CASE_TWO_BITS + SEQUENCE_BITS);
+//        id |= (case_two << SEQUENCE_BITS);
         id |= sequence;
 
         return id;
